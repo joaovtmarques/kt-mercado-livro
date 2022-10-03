@@ -31,7 +31,6 @@ class CustomerService(
 		}
 		
 		customerRepository.save(customer)
-		
 	}
 	
 	fun delete(id: Int) {
@@ -40,6 +39,5 @@ class CustomerService(
 		}
 		
 		customerRepository.deleteById(id)
-		
 	}
 }
