@@ -2,7 +2,7 @@ package com.mercadolivro.controller
 
 import com.mercadolivro.controller.request.PostCustomerRequest
 import com.mercadolivro.controller.request.PutCustomerRequest
-import com.mercadolivro.extension.toCustomerModel
+import com.mercadolivro.enums.extension.toCustomerModel
 import com.mercadolivro.model.CustomerModel
 import com.mercadolivro.service.CustomerService
 import org.springframework.http.HttpStatus
@@ -27,7 +27,7 @@ class CustomerController(
 
   @GetMapping("/{id}")
   fun getCustomer(@PathVariable id: Int): CustomerModel {
-    return customerService.getCustomer(id)
+    return customerService.getById(id)
   }
   
   @PutMapping("/{id}")
@@ -38,7 +38,7 @@ class CustomerController(
   
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  fun update(@PathVariable id: Int) {
+  fun delete(@PathVariable id: Int) {
     customerService.delete(id)
   }
 
