@@ -10,7 +10,6 @@ import org.springframework.data.repository.CrudRepository
 
 interface BookRepository : JpaRepository<BookModel, Int>{
 	
-	fun findByNameContaining(name: String): List<BookModel>
 	fun findByStatus(status: BookStatus, pageable: Pageable): Page<BookModel>
 	fun findByCustomer(customer: CustomerModel): List<BookModel>
 	
