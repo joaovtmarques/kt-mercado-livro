@@ -28,7 +28,7 @@ class CustomerService(
 	}
 	
 	fun getById(id: Int): CustomerModel {
-		return customerRepository.findById(id).orElseThrow{ NotFoundException(Errors.ML1201.message.format(id), Errors.ML1201.code) }
+		return customerRepository.findById(id).orElseThrow{ NotFoundException(Errors.ML201.message.format(id), Errors.ML201.code) }
 	}
 	
 	fun update(customer: CustomerModel) {

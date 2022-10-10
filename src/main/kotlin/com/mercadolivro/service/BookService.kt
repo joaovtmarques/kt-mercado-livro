@@ -28,7 +28,7 @@ class BookService (
 	}
 	
 	fun getById(id: Int): BookModel {
-		return bookRepository.findById(id).orElseThrow{ NotFoundException(Errors.ML1101.message.format(id), Errors.ML1101.code) }
+		return bookRepository.findById(id).orElseThrow{ NotFoundException(Errors.ML101.message.format(id), Errors.ML101.code) }
 	}
 	
 	fun delete(id: Int) {
