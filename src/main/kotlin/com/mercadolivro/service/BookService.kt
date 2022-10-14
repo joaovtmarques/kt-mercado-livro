@@ -56,4 +56,23 @@ class BookService (
 	fun getAllByIds(bookIds: Set<Int>): List<BookModel> {
 		return bookRepository.findAllById(bookIds).toList()
 	}
+	
+	fun purchase(books: MutableList<BookModel>) {
+		books.map {
+			
+			if (it.id != null) {
+				bookRepository.findById(it.id!!).orElseThrow{
+					NotFoundException(Errors.ML101.message.format(it.id), Errors.ML101.code)
+				}
+			}
+			
+			if(it.status != BookStatus.ATIVO) {
+				throw NotFoundException(Errors.ML301.message.format(it.id), Errors.ML301.code)
+			} else {
+				it.status = BookStatus.VENDIDO
+				bookRepository.saveAll(books)
+			}
+		}
+		
+	}
 }
