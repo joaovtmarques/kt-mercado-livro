@@ -1,8 +1,10 @@
 package com.mercadolivro.service
 
+import com.mercadolivro.enums.BookStatus
 import com.mercadolivro.enums.CustomerStatus
 import com.mercadolivro.enums.Errors
 import com.mercadolivro.exception.NotFoundException
+import com.mercadolivro.model.BookModel
 import com.mercadolivro.model.CustomerModel
 import com.mercadolivro.repository.CustomerRepository
 import org.springframework.data.domain.Page
@@ -50,5 +52,15 @@ class CustomerService(
 	
 	fun emailAvailable(email: String): Boolean {
 		return !customerRepository.existsByEmail(email)
+	}
+	
+		fun getBooks(id: Int, status: BookStatus?, pageable: Pageable): Iterable<BookModel> {
+		val customer: CustomerModel = customerRepository.findById(id).orElseThrow{ NotFoundException(Errors.ML201.message.format(id), Errors.ML201.code) }
+			
+			return if (status != null) {
+				bookService.getByStatus(status, pageable)
+			} else {
+				bookService.getByCustomer(customer)
+			}
 	}
 }

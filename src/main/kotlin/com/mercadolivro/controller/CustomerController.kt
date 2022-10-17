@@ -2,9 +2,12 @@ package com.mercadolivro.controller
 
 import com.mercadolivro.controller.request.PostCustomerRequest
 import com.mercadolivro.controller.request.PutCustomerRequest
+import com.mercadolivro.controller.response.BookResponse
 import com.mercadolivro.controller.response.CustomerResponse
+import com.mercadolivro.enums.BookStatus
 import com.mercadolivro.enums.extension.toCustomerModel
 import com.mercadolivro.enums.extension.toResponse
+import com.mercadolivro.model.BookModel
 import com.mercadolivro.service.CustomerService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -46,6 +49,11 @@ class CustomerController(
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun delete(@PathVariable id: Int) {
     customerService.delete(id)
+  }
+  
+  @GetMapping("/{id}/books")
+  fun getBooks(@RequestParam status: BookStatus?, @PathVariable id: Int, pageable: Pageable): List<BookResponse> {
+    return customerService.getBooks(id, status, pageable).map { it.toResponse() }
   }
 
 }
