@@ -7,7 +7,7 @@ import com.mercadolivro.controller.response.CustomerResponse
 import com.mercadolivro.enums.BookStatus
 import com.mercadolivro.enums.extension.toCustomerModel
 import com.mercadolivro.enums.extension.toResponse
-import com.mercadolivro.model.BookModel
+import com.mercadolivro.security.UserCanOnlyAccessTheirOwnResource
 import com.mercadolivro.service.CustomerService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -23,6 +23,7 @@ class CustomerController(
 ) {
 
   @GetMapping
+  @UserCanOnlyAccessTheirOwnResource
   fun getAll(@RequestParam name: String?, @PageableDefault(page = 0, size = 10) pageable: Pageable): Page<CustomerResponse> {
     return customerService.getAll(name, pageable).map { it.toResponse() }
   }
@@ -34,11 +35,13 @@ class CustomerController(
   }
 
   @GetMapping("/{id}")
+  @UserCanOnlyAccessTheirOwnResource
   fun getCustomer(@PathVariable id: Int): CustomerResponse {
     return customerService.getById(id).toResponse()
   }
   
   @PutMapping("/{id}")
+  @UserCanOnlyAccessTheirOwnResource
   @ResponseStatus(HttpStatus.NO_CONTENT)
   fun update(@PathVariable id: Int, @RequestBody @Valid customer: PutCustomerRequest) {
     val customerSaved = customerService.getById(id)
