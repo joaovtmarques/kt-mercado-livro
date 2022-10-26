@@ -20,12 +20,12 @@ class CustomerService(
 	private val bCrypt: BCryptPasswordEncoder
 ) {
 	
-	fun getAll(name: String?, pageable: Pageable): Page<CustomerModel> {
+	fun getAll(name: String?): List<CustomerModel> {
 		name?.let {
-			return customerRepository.findByNameContaining(it, pageable)
+			return customerRepository.findByNameContaining(it)
 		}
 		
-		return customerRepository.findAll(pageable)
+		return customerRepository.findAll()
 	}
 	
 	fun create(customer: CustomerModel) {
@@ -61,13 +61,12 @@ class CustomerService(
 		return !customerRepository.existsByEmail(email)
 	}
 	
-		fun getBooks(id: Int, status: BookStatus?, pageable: Pageable): Iterable<BookModel> {
+	fun getBooks(id: Int, status: BookStatus?, pageable: Pageable): Iterable<BookModel> {
 		val customer: CustomerModel = customerRepository.findById(id).orElseThrow{ NotFoundException(Errors.ML201.message.format(id), Errors.ML201.code) }
-			
-			return if (status != null) {
-				bookService.getByStatus(status, pageable)
-			} else {
-				bookService.getByCustomer(customer)
-			}
+		return if (status != null) {
+			bookService.getByStatus(status, pageable)
+		} else {
+			bookService.getByCustomer(customer)
+		}
 	}
 }
