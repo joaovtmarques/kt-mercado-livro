@@ -66,6 +66,22 @@ class BookService (
 		return bookRepository.findAllById(bookIds).toList()
 	}
 	
+	fun getByCustomerAndStatus(customer: CustomerModel, status: BookStatus): List<BookModel> {
+		
+		val booksByCustomer = bookRepository.findByCustomer(customer)
+		
+		val books: ArrayList<BookModel> = arrayListOf()
+		
+		for(book in booksByCustomer) {
+			if(book.status == status) {
+				books.add(book)
+			}
+		}
+		
+		return books
+	}
+	
+	
 	fun purchase(books: MutableList<BookModel>) {
 		books.map {
 			

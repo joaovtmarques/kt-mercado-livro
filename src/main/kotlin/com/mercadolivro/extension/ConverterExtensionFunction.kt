@@ -60,11 +60,12 @@ fun CustomerModel.toResponse(): CustomerResponse {
 }
 
 fun BookModel.toResponse(): BookResponse {
+	
 	return BookResponse(
 		id = this.id,
 		name = this.name,
 		price = this.price,
-		customer = this.customer,
+		customer = this.customer?.toResponse(),
 		status = this.status
 	)
 }

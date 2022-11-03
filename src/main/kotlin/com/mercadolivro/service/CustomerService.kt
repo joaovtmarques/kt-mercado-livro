@@ -42,7 +42,7 @@ class CustomerService(
 	
 	fun update(customer: CustomerModel) {
 		if(!customerRepository.existsById(customer.id!!)) {
-			throw Exception()
+			throw NotFoundException(Errors.ML201.message.format(customer.id), Errors.ML201.code)
 		}
 		
 		customerRepository.save(customer)
@@ -64,7 +64,8 @@ class CustomerService(
 	fun getBooks(id: Int, status: BookStatus?, pageable: Pageable): Iterable<BookModel> {
 		val customer: CustomerModel = customerRepository.findById(id).orElseThrow{ NotFoundException(Errors.ML201.message.format(id), Errors.ML201.code) }
 		return if (status != null) {
-			bookService.getByStatus(status, pageable)
+//			bookService.getByStatus(status, pageable)
+			bookService.getByCustomerAndStatus(customer, status)
 		} else {
 			bookService.getByCustomer(customer)
 		}
