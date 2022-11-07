@@ -57,8 +57,8 @@ class CustomerController(
   }
   
   @GetMapping("/{id}/books")
-  fun getBooks(@RequestParam status: BookStatus?, @PathVariable id: Int, pageable: Pageable): List<BookResponse> {
-    return customerService.getBooks(id, status, pageable).map { it.toResponse() }
+  fun getBooks(@RequestParam status: BookStatus?, @PathVariable id: Int): List<BookResponse> {
+    return customerService.getBooks(id, status).map { it.toResponse() }
   }
 
 }

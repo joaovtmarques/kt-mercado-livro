@@ -1,10 +1,13 @@
 package com.mercadolivro.service
 
+import com.mercadolivro.enums.BookStatus
 import com.mercadolivro.enums.CustomerStatus
 import com.mercadolivro.enums.Errors
 import com.mercadolivro.enums.Role
 import com.mercadolivro.exception.NotFoundException
+import com.mercadolivro.model.BookModel
 import com.mercadolivro.model.CustomerModel
+import com.mercadolivro.repository.BookRepository
 import com.mercadolivro.repository.CustomerRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -21,6 +24,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import java.math.BigDecimal
 import java.util.Optional
 import java.util.UUID
 import kotlin.random.Random
@@ -31,6 +35,9 @@ class CustomerServiceTest {
 	
 	@MockK
 	private lateinit var customerRepository: CustomerRepository
+	
+	@MockK
+	private lateinit var bookRepository: BookRepository
 	
 	@MockK
 	private lateinit var bookService: BookService
@@ -219,5 +226,18 @@ class CustomerServiceTest {
 		status = CustomerStatus.ATIVO,
 		password = password,
 		roles = setOf(Role.CUSTOMER)
+	)
+	
+	fun buildBook(
+		id: Int? = null,
+		name: String = "customer name",
+		price: BigDecimal = Random.nextDouble().toBigDecimal(),
+		customer: CustomerModel = buildCustomer()
+	) = BookModel (
+		id = id,
+		name = name,
+		price = price,
+		customer = customer,
+		status = BookStatus.ATIVO
 	)
 }

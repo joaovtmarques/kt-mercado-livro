@@ -61,13 +61,13 @@ class CustomerService(
 		return !customerRepository.existsByEmail(email)
 	}
 	
-	fun getBooks(id: Int, status: BookStatus?, pageable: Pageable): Iterable<BookModel> {
+	fun getBooks(id: Int, status: BookStatus?): List<BookModel> {
 		val customer: CustomerModel = customerRepository.findById(id).orElseThrow{ NotFoundException(Errors.ML201.message.format(id), Errors.ML201.code) }
-		return if (status != null) {
-//			bookService.getByStatus(status, pageable)
-			bookService.getByCustomerAndStatus(customer, status)
-		} else {
-			bookService.getByCustomer(customer)
+		
+		status?.let {
+			return bookService.getByCustomerAndStatus(customer, it)
 		}
+		
+		return bookService.getByCustomer(customer)
 	}
 }
