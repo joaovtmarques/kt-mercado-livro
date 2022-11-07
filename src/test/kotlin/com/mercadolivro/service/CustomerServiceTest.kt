@@ -5,6 +5,7 @@ import com.mercadolivro.enums.CustomerStatus
 import com.mercadolivro.enums.Errors
 import com.mercadolivro.enums.Role
 import com.mercadolivro.exception.NotFoundException
+import com.mercadolivro.helper.buildCustomer
 import com.mercadolivro.model.BookModel
 import com.mercadolivro.model.CustomerModel
 import com.mercadolivro.repository.BookRepository
@@ -214,30 +215,4 @@ class CustomerServiceTest {
 		verify(exactly = 1) { customerRepository.existsByEmail(email) }
 	}
 	
-	fun buildCustomer(
-		id: Int? = null,
-		name: String = "customer name",
-		email: String = "${UUID.randomUUID()}@email.com",
-		password: String = "password"
-	) = CustomerModel (
-		id = id,
-		name = name,
-		email = email,
-		status = CustomerStatus.ATIVO,
-		password = password,
-		roles = setOf(Role.CUSTOMER)
-	)
-	
-	fun buildBook(
-		id: Int? = null,
-		name: String = "customer name",
-		price: BigDecimal = Random.nextDouble().toBigDecimal(),
-		customer: CustomerModel = buildCustomer()
-	) = BookModel (
-		id = id,
-		name = name,
-		price = price,
-		customer = customer,
-		status = BookStatus.ATIVO
-	)
 }
