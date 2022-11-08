@@ -1,13 +1,10 @@
 package com.mercadolivro.service
 
-import com.mercadolivro.enums.BookStatus
+
 import com.mercadolivro.enums.CustomerStatus
 import com.mercadolivro.enums.Errors
-import com.mercadolivro.enums.Role
 import com.mercadolivro.exception.NotFoundException
 import com.mercadolivro.helper.buildCustomer
-import com.mercadolivro.model.BookModel
-import com.mercadolivro.model.CustomerModel
 import com.mercadolivro.repository.BookRepository
 import com.mercadolivro.repository.CustomerRepository
 import io.mockk.every
@@ -22,12 +19,8 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import java.math.BigDecimal
-import java.util.Optional
-import java.util.UUID
+import java.util.*
 import kotlin.random.Random
 
 
