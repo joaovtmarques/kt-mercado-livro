@@ -1,7 +1,7 @@
 package com.mercadolivro.config
 
 import com.mercadolivro.enums.Role
-import com.mercadolivro.exception.CustomAuthenticationEntryPoint
+import com.mercadolivro.security.CustomAuthenticationEntryPoint
 import com.mercadolivro.repository.CustomerRepository
 import com.mercadolivro.security.AuthenticationFilter
 import com.mercadolivro.security.AuthorizationFilter
@@ -33,14 +33,18 @@ class SecurityConfig(
 	private val customEntryPoint: CustomAuthenticationEntryPoint
 ): WebSecurityConfigurerAdapter() {
 	
-	private val PUBLIC_MATCHES = arrayOf<String>()
+	private val PUBLIC_MATCHERS = arrayOf<String>()
 	
-	private val PUBLIC_POST_MATCHES = arrayOf(
+	private val PUBLIC_POST_MATCHERS = arrayOf(
 		"/customers"
 	)
 	
-	private val ADMIN_MATCHES = arrayOf(
-		"/admin/**"
+	private val ADMIN_MATCHERS = arrayOf(
+		"/admins/**"
+	)
+	
+	private val PUBLIC_GET_MATCHERS = arrayOf(
+		"/books"
 	)
 	
 	override fun configure(auth: AuthenticationManagerBuilder) {
@@ -49,10 +53,11 @@ class SecurityConfig(
 	
 	override fun configure(http: HttpSecurity) {
 		http.cors().and().csrf().disable()
-		http.authorizeRequests()
-			.antMatchers(*PUBLIC_MATCHES).permitAll()
-			.antMatchers(HttpMethod.POST, *PUBLIC_POST_MATCHES).permitAll()
-			.antMatchers(*ADMIN_MATCHES).hasAuthority(Role.ADMIN.description)
+		http.authorizeHttpRequests()
+			.antMatchers(*PUBLIC_MATCHERS).permitAll()
+			.antMatchers(HttpMethod.POST, *PUBLIC_POST_MATCHERS).permitAll()
+			.antMatchers(*ADMIN_MATCHERS).hasAnyAuthority((Role.ADMIN.description))
+			.antMatchers(HttpMethod.GET, *PUBLIC_GET_MATCHERS).permitAll()
 			.anyRequest().authenticated()
 		http.addFilter(AuthenticationFilter(authenticationManager(), customerRepository, jwtUtil))
 		http.addFilter(AuthorizationFilter(authenticationManager(), userDetails, jwtUtil))
